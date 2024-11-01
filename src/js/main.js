@@ -1,6 +1,7 @@
 import MainSlider from "./modules/slider/slider-main";
 import MiniSlider from "./modules/slider/slider-mini";
 import VideoPlayer from "./modules/playVideo";
+import Difference from "./modules/difference";
 
 window.addEventListener("DOMContentLoaded", () => {
   // Main Slider
@@ -60,4 +61,7 @@ window.addEventListener("DOMContentLoaded", () => {
   } else {
     console.error("Video player overlay not found");
   }
+
+  // Difference
+  new Difference(".officerold", ".officernew", ".officer__card-item").init();
 });
