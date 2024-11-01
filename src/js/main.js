@@ -11,7 +11,7 @@ window.addEventListener("DOMContentLoaded", () => {
     console.error("Main slider container not found");
   }
 
-  // ShowUp Mini Slider
+  //ShowUp Mini Slider
   const showUpSlider = new MiniSlider({
     container: ".showup__content-slider",
     prev: ".showup__prev",

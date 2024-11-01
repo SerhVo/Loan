@@ -74,6 +74,7 @@ class MainSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
     super(btns);
   }
   showSlides(n) {
+    this.slides = [...this.container.children];
     if (n > this.slides.length) {
       this.slideIndex = 1;
     }
@@ -81,34 +82,34 @@ class MainSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
       this.slideIndex = this.slides.length;
     }
     try {
-      this.hanson.style.opacity = '0';
+      this.hanson.style.opacity = "0";
       if (n == 3) {
-        this.hanson.classList.add('animated');
+        this.hanson.classList.add("animated");
         setTimeout(() => {
-          this.hanson.style.opacity = '1';
-          this.hanson.classList.add('slideInUp');
+          this.hanson.style.opacity = "1";
+          this.hanson.classList.add("slideInUp");
         }, 3000);
       } else {
-        this.hanson.classList.remove('slideInUp');
+        this.hanson.classList.remove("slideInUp");
       }
     } catch (e) {}
     this.slides.forEach(slide => {
-      slide.style.display = 'none';
+      slide.style.display = "none";
     });
-    this.slides[this.slideIndex - 1].style.display = 'block';
+    this.slides[this.slideIndex - 1].style.display = "block";
   }
   plusSlides(n) {
     this.showSlides(this.slideIndex += n);
   }
   render() {
     try {
-      this.hanson = document.querySelector('.hanson');
+      this.hanson = document.querySelector(".hanson");
     } catch (e) {}
     this.btns.forEach(item => {
-      item.addEventListener('click', () => {
+      item.addEventListener("click", () => {
         this.plusSlides(1);
       });
-      item.parentNode.previousElementSibling.addEventListener('click', e => {
+      item.parentNode.previousElementSibling.addEventListener("click", e => {
         e.preventDefault();
         this.slideIndex = 1;
         this.showSlides(this.slideIndex);
@@ -132,63 +133,180 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider */ "./src/js/modules/slider/slider.js");
 
+
+// export default class MiniSlider extends Slider {
+//   constructor(container, next, prev, activeClass, animate, autoplay) {
+//     super(container, next, prev, activeClass, animate, autoplay);
+//   }
+
+//   decorizeSlides() {
+//     [...this.container.children].forEach((slide) => {
+//       slide.classList.remove(this.activeClass);
+//       if (this.animate) {
+//         slide.querySelector(".card__title").style.opacity = "0.4";
+//         slide.querySelector(".card__controls-arrow").style.opacity = "0";
+//       }
+//     });
+
+//     if (!this.slides[0].closest("button")) {
+//       this.slides[0].classList.add(this.activeClass);
+//     }
+
+//     if (this.animate) {
+//       this.slides[0].querySelector(".card__title").style.opacity = "1";
+//       this.slides[0].querySelector(".card__controls-arrow").style.opacity = "1";
+//     }
+//   }
+
+//   nextSlide() {
+//     if (
+//       this.slides[1].tagName == "BUTTON" &&
+//       this.slides[2].tagName == "BUTTON"
+//     ) {
+//       this.container.appendChild(this.slides[0]); // Slide
+//       this.container.appendChild(this.slides[1]); // Btn
+//       this.container.appendChild(this.slides[2]); // Btn
+//       this.decorizeSlides();
+//     } else if (this.slides[1].tagName == "BUTTON") {
+//       this.container.appendChild(this.slides[0]); // Slide
+//       this.container.appendChild(this.slides[1]); // Btn
+//       this.decorizeSlides();
+//     } else {
+//       this.container.appendChild(this.slides[0]);
+//       this.decorizeSlides();
+//     }
+//   }
+
+//   bindTriggers() {
+//     this.next.addEventListener("click", () => {
+//       this.nextSlide();
+//     });
+
+//     this.prev.addEventListener("click", () => {
+//       for (let i = this.slides.length - 1; i > 0; i--) {
+//         if (this.slides[i].tagName !== "BUTTON") {
+//           let active = this.slides[i];
+//           this.container.insertBefore(active, this.slides[0]);
+//           this.decorizeSlides();
+//           break;
+//         }
+//       }
+//     });
+//   }
+
+//   init() {
+//     this.container.style.cssText = `
+//             display: flex;
+//             flex-wrap: wrap;
+//             overflow: hidden;
+//             align-items: flex-start;
+//         `;
+
+//     this.bindTriggers();
+//     this.decorizeSlides();
+
+//     if (this.autoplay) {
+//       setInterval(() => this.nextSlide(), 5000);
+//     }
+//   }
+// }
+
 class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(container, next, prev, activeClass, animate, autoplay) {
-    super(container, next, prev, activeClass, animate, autoplay);
+  constructor({
+    container,
+    next,
+    prev,
+    activeClass,
+    animate = false,
+    autoplay = false
+  }) {
+    super({
+      container,
+      next,
+      prev,
+      activeClass,
+      animate,
+      autoplay
+    });
+    this.activeClass = activeClass;
+    this.animate = animate;
+    this.autoplay = autoplay;
   }
   decorizeSlides() {
-    this.slides.forEach(slide => {
+    // Убираем активный класс и сбрасываем стиль для всех слайдов
+    [...this.container.children].forEach(slide => {
       slide.classList.remove(this.activeClass);
       if (this.animate) {
-        slide.querySelector(".card__title").style.opacity = "0.4";
-        slide.querySelector(".card__controls-arrow").style.opacity = "0";
+        this.setStyle(slide, 0.4, 0);
       }
     });
+
+    // Применяем активный класс для первого слайда (если он не кнопка)
     if (!this.slides[0].closest("button")) {
       this.slides[0].classList.add(this.activeClass);
     }
+
+    // Применяем анимацию, если она включена
     if (this.animate) {
-      this.slides[0].querySelector(".card__title").style.opacity = "1";
-      this.slides[0].querySelector(".card__controls-arrow").style.opacity = "1";
+      this.setStyle(this.slides[0], 1, 1);
     }
+  }
+  setStyle(slide, titleOpacity, arrowOpacity) {
+    const title = slide.querySelector(".card__title");
+    const arrow = slide.querySelector(".card__controls-arrow");
+    if (title) title.style.opacity = titleOpacity;
+    if (arrow) arrow.style.opacity = arrowOpacity;
   }
   nextSlide() {
-    if (this.slides[1].tagName == "BUTTON" && this.slides[2].tagName == "BUTTON") {
-      this.container.appendChild(this.slides[0]); // Slide
-      this.container.appendChild(this.slides[1]); // Btn
-      this.container.appendChild(this.slides[2]); // Btn
-      this.decorizeSlides();
-    } else if (this.slides[1].tagName == "BUTTON") {
-      this.container.appendChild(this.slides[0]); // Slide
-      this.container.appendChild(this.slides[1]); // Btn
-      this.decorizeSlides();
+    const [firstSlide, secondSlide, thirdSlide] = this.slides;
+
+    // Перемещаем слайды и кнопки, если есть
+    if (secondSlide.tagName === "BUTTON" && thirdSlide.tagName === "BUTTON") {
+      this.moveSlides([firstSlide, secondSlide, thirdSlide]);
+    } else if (secondSlide.tagName === "BUTTON") {
+      this.moveSlides([firstSlide, secondSlide]);
     } else {
-      this.container.appendChild(this.slides[0]);
-      this.decorizeSlides();
+      this.moveSlides([firstSlide]);
     }
   }
+  moveSlides(slides) {
+    slides.forEach(slide => this.container.appendChild(slide));
+    this.decorizeSlides();
+  }
   bindTriggers() {
-    this.next.addEventListener("click", () => this.nextSlide());
-    this.prev.addEventListener("click", () => {
-      for (let i = this.slides.length - 1; i > 0; i--) {
-        if (this.slides[i].tagName !== "BUTTON") {
-          let active = this.slides[i];
-          this.container.insertBefore(active, this.slides[0]);
-          this.decorizeSlides();
-          break;
+    if (this.next) {
+      this.next.addEventListener("click", () => this.nextSlide());
+    }
+    if (this.prev) {
+      this.prev.addEventListener("click", () => {
+        // Перемещаем последний слайд (если он не кнопка) в начало
+        for (let i = this.slides.length - 1; i > 0; i--) {
+          if (this.slides[i].tagName !== "BUTTON") {
+            this.container.insertBefore(this.slides[i], this.slides[0]);
+            this.decorizeSlides();
+            break;
+          }
         }
-      }
-    });
+      });
+    }
   }
   init() {
+    if (!this.container) {
+      console.error("Container not found for MiniSlider.");
+      return;
+    }
+
+    // Устанавливаем CSS-стили для контейнера
     this.container.style.cssText = `
-            display: flex;
-            flex-wrap: wrap;
-            overflow: hidden;
-            align-items: flex-start;
-        `;
+      display: flex;
+      flex-wrap: wrap;
+      overflow: hidden;
+      align-items: flex-start;
+    `;
     this.bindTriggers();
     this.decorizeSlides();
+
+    // Включаем автопрокрутку, если она активирована
     if (this.autoplay) {
       setInterval(() => this.nextSlide(), 5000);
     }
@@ -212,19 +330,13 @@ class Slider {
     container = null,
     btns = null,
     next = null,
-    prev = null,
-    activeClass = '',
-    animate,
-    autoplay
+    prev = null
   } = {}) {
     this.container = document.querySelector(container);
-    this.slides = [...this.container.children];
+    this.slides = this.container.children;
     this.btns = document.querySelectorAll(btns);
-    this.prev = document.querySelector(prev);
     this.next = document.querySelector(next);
-    this.activeClass = activeClass;
-    this.animate = animate;
-    this.autoplay = autoplay;
+    this.prev = document.querySelector(prev);
     this.slideIndex = 1;
   }
 }
@@ -312,7 +424,7 @@ window.addEventListener("DOMContentLoaded", () => {
     console.error("Main slider container not found");
   }
 
-  // ShowUp Mini Slider
+  //ShowUp Mini Slider
   const showUpSlider = new _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_1__["default"]({
     container: ".showup__content-slider",
     prev: ".showup__prev",
