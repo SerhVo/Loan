@@ -35,6 +35,7 @@ class Difference {
     container.querySelector(".plus").addEventListener("click", () => {
       if (counter.value < items.length - 2) {
         items[counter.value].style.display = "flex";
+        items[counter.value].classList.add("fadeIn");
         counter.value++;
       } else {
         items[counter.value].style.display = "flex";
