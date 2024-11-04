@@ -66,12 +66,8 @@ window.addEventListener("DOMContentLoaded", () => {
   } catch (e) {}
 
   // Video Player
-  const player = new VideoPlayer(".showup .play", ".overlay");
-  if (player.overlay) {
-    player.init();
-  } else {
-    console.error("Video player overlay not found");
-  }
+  new VideoPlayer(".showup .play", ".overlay").init();
+  new VideoPlayer(".module__video-item .play", ".overlay").init();
 
   // Difference
   new Difference(".officerold", ".officernew", ".officer__card-item").init();
