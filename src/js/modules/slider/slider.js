@@ -12,6 +12,8 @@ export default class Slider {
     this.btns = document.querySelectorAll(btns);
     this.next = document.querySelector(next);
     this.prev = document.querySelector(prev);
+    this.prevmodule = document.querySelectorAll(".prevmodule");
+    this.nextmodule = document.querySelectorAll(".nextmodule");
     this.slideIndex = 1;
   }
 }

@@ -13,6 +13,14 @@ window.addEventListener("DOMContentLoaded", () => {
     // console.error("Main slider container not found");
   }
 
+  try {
+    const modulePageSlider = new MainSlider({
+      btns: ".next",
+      container: ".moduleapp",
+    });
+    modulePageSlider.render();
+  } catch (e) {}
+
   //ShowUp Mini Slider
   try {
     const showUpSlider = new MiniSlider({
