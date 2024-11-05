@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/01e6c0a6-43d1-4ce3-9f00-eb9a4b7bed15)
+
+
 # Loan
 ### 📂 Multi-Page Website with OOP-Style JavaScript
 
